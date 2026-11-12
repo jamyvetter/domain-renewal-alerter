@@ -149,9 +149,11 @@ cd domain-renewal-alerter
 In your GitHub repository, navigate to **Settings > Secrets and variables > Actions**:
 
 #### Repository Secrets (Required):
-- `GEMINI_API_KEY`: Your Google Gemini API Key (from Google AI Studio).
-- `TELEGRAM_BOT_TOKEN`: The API token of your Telegram bot (created via `@BotFather`).
-- `TELEGRAM_CHAT_ID`: Your personal or group chat ID (obtained via `@userinfobot`).
+- `GEMINI_API_KEY`: Your Google Gemini API Key (get one free at [Google AI Studio](https://aistudio.google.com/app/apikey)).
+- `TELEGRAM_BOT_TOKEN`: The API token of your Telegram bot (created via [@BotFather](https://t.me/BotFather)).
+- `TELEGRAM_CHAT_ID`: Your personal or group chat ID (obtained via [@userinfobot](https://t.me/userinfobot)).
+
+> 💡 **Important Telegram Step**: Before running the alert, open your bot in Telegram and send it `/start`. Telegram bots are not permitted to message users without prior user interaction.
 
 #### Repository Variables (Optional):
 - `DOMAIN`: The domain name you want to track (e.g. `example.com`). Defaults to `jamyvetter.net` if omitted.
@@ -159,7 +161,8 @@ In your GitHub repository, navigate to **Settings > Secrets and variables > Acti
 ### 3. Run Manually or Wait for Cron
 
 1. Go to the **Actions** tab in your GitHub repository.
-2. Select **Domain Renewal Monitor**.
+   *(Note: If you forked this repository, click "I understand my workflows, go ahead and enable them" first).*
+2. Select **Domain Renewal Monitor** in the left sidebar.
 3. Click **Run workflow** to test execution immediately.
 
 ---
