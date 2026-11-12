@@ -77,6 +77,64 @@ This project was born out of a real-world scenario: an expired `.net` domain mov
 
 ---
 
+# Domain Lifecycle (RFC 3915)
+
+```mermaid
+flowchart TD
+    P0["0. Available in Public Pool<br>Status: Available / Free (~10€)"]
+    P1["1. Registered & Active Ownership<br>Status: ok / active (1–10 yrs)"]
+    P2["2. Reminder Window (T - 60d to T - 7d)<br>Registrar renewal emails (ICANN ERRP)"]
+    P3["3. Expiration Timestamp (T = 0)<br>Registry bills registrar in credit"]
+    P4["4. Auto-Renew Grace Period (0–45 days)<br>Status: autoRenewPeriod / clientHold"]
+    P5["5. Redemption Grace (~30d, RFC 3915)<br>Status: redemptionPeriod (DNS dead, 60€)<br><b>🔴 WHERE I WAS TRAPPED</b>"]
+    P6["6. Pending Delete (5 days, RFC 3915)<br>Status: pendingDelete (Death row, locked)<br><b>🟠 TARGET ALERT 1: Warning</b>"]
+    P7["7. Dropped / Purged Back to Pool<br>Status: Available (~10€ normal registration)<br><b>🟢 TARGET ALERT 2: Buy Immediately!</b>"]
+
+    P0 -->|"Register domain (~10€)"| P1
+    P1 -->|"Approaching expiry"| P2
+    P2 -->|"Missed reminder emails"| P3
+    P3 -->|"Enters registrar grace"| P4
+    P4 -->|"Registrar cancels lease"| P5
+    P5 -->|"Restoration window expires"| P6
+    P6 -->|"Registry purges record"| P7
+    P7 -.->|"Re-purchase at ~10€"| P1
+
+    style P2 fill:#fff3bf,stroke:#fab005,stroke-width:2px,color:#000
+    style P5 fill:#ff6b6b,stroke:#c92a2a,stroke-width:3px,color:#fff
+    style P6 fill:#ffa94d,stroke:#d9480f,stroke-width:3px,color:#fff
+    style P7 fill:#51cf66,stroke:#2b8a3e,stroke-width:3px,color:#fff
+```
+
+```text
+  [ 0. Available Pool ] ──(Buy at ~10€)──> [ 1. Active Ownership (ok) ]
+                                                        │
+                                                        ▼
+                                           [ 2. Pre-Expiry Reminders (T-60d) ]
+                                           (Missed emails in cluttered inbox!)
+                                                        │
+                                                        ▼
+                                           [ 3. Expiration Timestamp (T=0) ]
+                                                        │
+                                                        ▼
+                                           [ 4. Auto-Renew Grace (0–45d) ]
+                                           (Standard ~10€ renewal still valid)
+                                                        │ (Registrar cancels)
+                                                        ▼
+  🔴 WHERE I WAS TRAPPED (60€ Ransom)      [ 5. Redemption Grace (~30d) ]
+                                           (DNS dead, heavy 50€–60€ penalty fee)
+                                                        │
+                                                        ▼
+  🟠 TARGET ALERT 1 (Drop Imminent)        [ 6. Pending Delete (5 days) ]
+                                           (Irreversible death row, no restoration)
+                                                        │
+                                                        ▼
+  🟢 TARGET ALERT 2 (Buy Immediately!)     [ 7. Dropped / Available (~10€) ]
+                                                        │
+                                                        └──────(Re-purchase)──────┘
+```
+
+---
+
 # Quick Start
 
 ### 1. Fork or Clone this Repository
