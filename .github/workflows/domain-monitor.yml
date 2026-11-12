@@ -1,0 +1,33 @@
+name: Domain Renewal Monitor
+
+on:
+  schedule:
+    # Run twice daily around target registry update times (11:00 UTC and 13:00 UTC)
+    - cron: '0 11,13 * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  monitor:
+    name: Check Domain Status & Alert
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Domain Monitor
+        env:
+          DOMAIN: ${{ vars.DOMAIN || 'jamyvetter.net' }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python monitor.py
